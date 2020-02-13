@@ -1,0 +1,116 @@
+<?php
+
+use local_eabccoursegrades\utils;
+
+require(__DIR__ . '/../../config.php');
+require_once($CFG->libdir . '/pdflib.php');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(new moodle_url('/local/eabccoursegrades/course_grades.php'));
+$courseid = required_param('courseid', PARAM_INT);
+
+$course = get_course($courseid);
+$profesor = utils::get_docente($course);
+if ($profesor) {
+    $profesor = $profesor['name'];
+    $docente = '<p style="text-align:right">Docente: <b>' . $profesor . '</b></p>';
+} else {
+    $docente = '<p style="text-align:right">Docente: <b> Sánchez Santiago</b></p>';
+}
+$fecha = time();
+$pdf = new pdf();
+$pdf->AddPage();
+
+$report = '';
+$header = '
+                
+                    <h1 style="text-align:center;">PLANILLA DE NOTAS DE CURSADA</h1>
+                    ' . $docente . '
+                    <p style="text-align:right">Fecha de impresión: <b>' . date('d/m/Y', time()) . '</b></p>
+                    <p style="text-align:left">Materia: <b>' . $course->fullname . '</b></p>
+                    <table>
+                    <tr>
+                    <td style="text-align:left">Plan: <b>2018</b> </td>
+                    <td style="text-align:center">Cuatrimestre: <b>1°</b></td>
+                    <td style="text-align:rigth">Turno: <b>N</b></td>
+                    <td style="text-align:rigth">Curso: <b>TS1A</b></td>
+                    </tr>
+                    </table>
+                    <table border="1">        
+                        <thead>
+                            <tr>
+                                <th>Ord</th>
+                                <th>Legajo</th>
+                                <th>Apellido y Nombre</th>
+                                <th>Observaciones</th>
+                                <th>Nota final</th>
+                                <th>Carrera</th>
+                                <th>Sede</th>
+                            </tr>
+                        </thead>';
+$body = '               <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>123456</td>
+                                <td>Martinez Esteban</td>
+                                <td>Regular</td>
+                                <td>8-Aprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>63434</td>
+                                <td>Sánchez María</td>
+                                <td>Recursante</td>
+                                <td>2-Reprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>123456</td>
+                                <td>Martinez Esteban</td>
+                                <td>Regular</td>
+                                <td>8-Aprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>63434</td>
+                                <td>Sánchez María</td>
+                                <td>Recursante</td>
+                                <td>2-Reprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>123456</td>
+                                <td>Martinez Esteban</td>
+                                <td>Regular</td>
+                                <td>8-Aprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>63434</td>
+                                <td>Sánchez María</td>
+                                <td>Recursante</td>
+                                <td>2-Reprobado</td>
+                                <td>Tecnicatura Superior en Analisis de Sistemas</td>
+                                <td>Almagro</td>
+                            </tr>
+                           
+
+                        </tbody>
+                    </table>
+                
+            ';
+$footer = '';
+$report = $header . $body . $footer;
+
+$pdf->WriteHTML($report, true, 0, true, 0);
+$pdf->lastPage();
+$pdf->Output('notas-' . $course->fullname . '-' . date('d-m-Y', time()) . '.pdf', 'D');

@@ -1,0 +1,48 @@
+Plan: No se sabe de donde viene
+Propuesta: Crear un campo personalizado
+
+Cuatrimestre y turno: se propone campos personalizados
+
+Consultas flexibles:
+Buscar la materia por materia, plan, sede, curso y docente.
+Flexible, es para que la búsqueda pueda combinar los criterios.
+
+legajo: es un número único 
+podría ser el idnumber o un campo personalizado
+
+curso (grupo?): si se usa para distinguir una división de otra
+
+PLAN: materia
+CUATRIMESTRE: materia
+TURNO: materia
+DOCENTE: materia
+
+CURSO: grupo
+
+SEDE: usuario
+CARRERA: usuario
+LEGAJO = idnumber: usuario
+
+__________________________
+Vista1 con select de cursos: elige el curso y genera el reporte
+_____
+Vista2 con filtros, para llevar al usuario a lista de cursos y ahí generar el reporte
+Cuatrimestre es una categoría: 
+si se cambia a campo personalizado de materia, Se puede listar en un select
+
+plan está concatenado a una materia:
+si se cambia a campo personalizado de materia, Se puede listar en un select
+
+__________________________
+plan: Que nombres reciben los planes
+
+__________________________
+documentacion
+campos personalizados de curso
+plan: select
+cuatrimestre: select
+turno: select
+
+Campos personalizados de usuario
+legajo:texto -> unico
+
